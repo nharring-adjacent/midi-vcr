@@ -1,9 +1,10 @@
-val kotlinVersion = "1.8.22"
-val junitJupiterVersion = "5.9.2"
-
 plugins {
-    kotlin("jvm") version kotlinVersion apply false
+    // Kotlin plugin: same version as modules
+    kotlin("jvm") version "1.8.22" apply false
 }
+
+// JUnit Jupiter version for tests
+val junitJupiterVersion = "5.9.2"
 
 allprojects {
     repositories {
