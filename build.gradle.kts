@@ -1,5 +1,6 @@
+# Enable Kotlin DSL, Kotlin/JVM and Java Library plugins in subprojects
 plugins {
-    // Kotlin plugin: same version as modules
+    `kotlin-dsl`
     kotlin("jvm") version "1.8.22" apply false
     id("java-library") apply false
 }
