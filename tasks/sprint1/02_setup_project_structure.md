@@ -13,7 +13,7 @@
 - Establish source directory layout for each module under `src/main/kotlin` and `src/test/kotlin`.
 
 **Deliverables**:
-- `settings.gradle.kts` listing `:midi`, `:runtime`, and `:cli`
+- `settings.gradle.kts` listing `:midi`, `:runtime`, and `:cli` (in root directory)
 - Root `build.gradle.kts` with common plugin and dependency management placeholders
 - Empty `build.gradle.kts` files in each module directory
 - Directory structure:
