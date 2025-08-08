@@ -29,12 +29,51 @@ Cassette
 
 ## Spec IR (minimal contract)
 
-- Nodes: `Seq(nodes)`, `Const(byte)`, `U7(name)`, `U14(name)`, `Bytes(name,len|until)`, `Choice(cases)`, `Repeat(node,count|until)`.
-- Validate hooks:
-  - Built-ins: `all_bytes_7bit`, checksum functions (`roland_sum7`, `xor`, `twos_compl`, `yamaha_xor`, configurable).
-  - Expression engine for computed fields and rules (ints, byte arrays, sum, slice).
-- Transport adapters:
-  - Raw MIDI (SysEx7) and MIDI 2.0 UMP SysEx7/SysEx8 (de-chunk to payload then validate).
+### AST Node Types
+
+| Node    | Parameters                             | Description                                      |
+|---------|----------------------------------------|--------------------------------------------------|
+| `Seq`   | `nodes: List<Node>`                    | Ordered sequence of child nodes.                 |
+| `Const` | `byte: Byte`                           | Literal byte value to match or emit.             |
+| `U7`    | `name: String`                         | Named 7-bit field.                               |
+| `U14`   | `name: String`                         | Named 14-bit field (two successive U7 bytes).    |
+| `Bytes` | `name: String, len: Int`               | Raw byte array of fixed length.                  |
+|         | `name: String, until: Byte`            | Raw bytes until sentinel value.                  |
+| `Choice`| `cases: Map<Byte, Node>`               | Branch into sub-spec based on key byte.          |
+| `Repeat`| `node: Node, count: Int` or `until: Expr` | Repeat sub-node fixed times or until condition. |
+
+### Built-in Validation Hooks
+
+- `all_bytes_7bit`: ensure every byte in payload is ≤ 0x7F.
+- Checksum functions:
+  - `roland_sum7`, `xor`, `twos_compl`, `yamaha_xor` (configurable).
+
+Hooks are declared under `validate` in a spec:
+
+```yaml
+validate:
+  - all_bytes_7bit
+  - checksum: roland_sum7
+```
+
+### Expression Engine for Computed Fields & Rules
+
+Supports integer and byte-array operations, slices, sums, and comparisons.  
+Computed fields and validation rules use expressions:
+
+```yaml
+computed:
+  data_length:
+    expr: "payload.size()"    # bytes count
+
+validate:
+  - expr: "data_length == expected_length"
+```
+
+### Transport Adapters
+
+- Raw MIDI (SysEx7): de-chunk framing, validate 7-bit constraints.  
+- MIDI 2.0 UMP SysEx7/SysEx8: de-chunk UMP packets to payload then validate.
 
 ## Error Model
 

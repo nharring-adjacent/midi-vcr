@@ -1,0 +1,230 @@
+# Example Spec DSL for E-Mu Orbit
+# NOTE: Illustrative example of the Spec-DSL structure; values are verified from documentation but please validate checksum algorithm implementation
+manufacturer: E-Mu
+model: Orbit
+transport: SysEx7
+checksum: emu_crc
+
+commands:
+  # Preset Data Request (rank-based; ll=lsb/mm=msb of preset number)
+  preset_data_request:
+    spec:
+      Seq:
+        nodes:
+          - Const: 0xF0
+          - Const: 0x18
+          - Const: 0x0A
+          - U7: device_id
+          - Const: 0x00
+          - U14: preset_number
+          - Const: 0xF7
+    validate:
+      - all_bytes_7bit
+
+  # Preset Data Response with checksum
+  preset_data:
+    spec:
+      Seq:
+        nodes:
+          - Const: 0xF0
+          - Const: 0x18
+          - Const: 0x0A
+          - U7: device_id
+          - Const: 0x01
+          - U14: preset_number
+          - Bytes:
+              name: preset_data_block
+              until: 0xF7
+          - U7: checksum
+          - Const: 0xF7
+    validate:
+      - all_bytes_7bit
+      - checksum: emu_crc
+
+  # Parameter Value Request
+  parameter_value_request:
+    spec:
+      Seq:
+        nodes:
+          - Const: 0xF0
+          - Const: 0x18
+          - Const: 0x0A
+          - U7: device_id
+          - Const: 0x02
+          - U14: parameter_number
+          - Const: 0xF7
+    validate:
+      - all_bytes_7bit
+
+  # Parameter Value Response
+  parameter_value:
+    spec:
+      Seq:
+        nodes:
+          - Const: 0xF0
+          - Const: 0x18
+          - Const: 0x0A
+          - U7: device_id
+          - Const: 0x03
+          - U14: parameter_number
+          - U14: parameter_value
+          - Const: 0xF7
+    validate:
+      - all_bytes_7bit
+
+  # Tuning Table Request
+  tuning_table_request:
+    spec:
+      Seq:
+        nodes:
+          - Const: 0xF0
+          - Const: 0x18
+          - Const: 0x0A
+          - U7: device_id
+          - Const: 0x04
+          - Const: 0xF7
+    validate:
+      - all_bytes_7bit
+
+  # Tuning Table Response (262 bytes)
+  tuning_table:
+    spec:
+      Seq:
+        nodes:
+          - Const: 0xF0
+          - Const: 0x18
+          - Const: 0x0A
+          - U7: device_id
+          - Const: 0x05
+          - Bytes:
+              name: tuning_table_data
+              len: 262
+          - Const: 0xF7
+    validate:
+      - all_bytes_7bit
+
+  # Version Request
+  version_request:
+    spec:
+      Seq:
+        nodes:
+          - Const: 0xF0
+          - Const: 0x18
+          - Const: 0x0A
+          - U7: device_id
+          - Const: 0x0A
+          - Const: 0xF7
+    validate:
+      - all_bytes_7bit
+
+  # Version Response
+  version:
+    spec:
+      Seq:
+        nodes:
+          - Const: 0xF0
+          - Const: 0x18
+          - Const: 0x0A
+          - U7: device_id
+          - Const: 0x0B
+          - Bytes:
+              name: version_bytes
+              len: 3
+          - Const: 0xF7
+    validate:
+      - all_bytes_7bit
+
+  # Configuration Request
+  config_request:
+    spec:
+      Seq:
+        nodes:
+          - Const: 0xF0
+          - Const: 0x18
+          - Const: 0x0A
+          - U7: device_id
+          - Const: 0x0C
+          - Const: 0xF7
+    validate:
+      - all_bytes_7bit
+
+  # Configuration Response (sound set IDs and counts)
+  config_response:
+    spec:
+      Seq:
+        nodes:
+          - Const: 0xF0
+          - Const: 0x18
+          - Const: 0x0A
+          - U7: device_id
+          - Const: 0x0D
+          - U14: total_presets
+          - Const: 0x0B
+          - U14: count_set1
+          - Const: 0x0C
+          - U14: count_set2
+          - Const: 0xF7
+    validate:
+      - all_bytes_7bit
+
+  # Instrument List Request
+  instrument_list_request:
+    spec:
+      Seq:
+        nodes:
+          - Const: 0xF0
+          - Const: 0x18
+          - Const: 0x0A
+          - U7: device_id
+          - Const: 0x0E
+          - Const: 0xF7
+    validate:
+      - all_bytes_7bit
+
+  # Instrument List Response (14 bytes per entry)
+  instrument_list:
+    spec:
+      Seq:
+        nodes:
+          - Const: 0xF0
+          - Const: 0x18
+          - Const: 0x0A
+          - U7: device_id
+          - Const: 0x0F
+          - Bytes:
+              name: instrument_entries
+              until: 0xF7
+          - Const: 0xF7
+    validate:
+      - all_bytes_7bit
+
+  # Preset List Request
+  preset_list_request:
+    spec:
+      Seq:
+        nodes:
+          - Const: 0xF0
+          - Const: 0x18
+          - Const: 0x0A
+          - U7: device_id
+          - Const: 0x12
+          - Const: 0xF7
+    validate:
+      - all_bytes_7bit
+
+  # Preset List Response (13 bytes per name)
+  preset_list:
+    spec:
+      Seq:
+        nodes:
+          - Const: 0xF0
+          - Const: 0x18
+          - Const: 0x0A
+          - U7: device_id
+          - Const: 0x13
+          - Bytes:
+              name: preset_names
+              until: 0xF7
+          - Const: 0xF7
+    validate:
+      - all_bytes_7bit

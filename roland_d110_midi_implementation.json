@@ -1,0 +1,738 @@
+{
+  "device": {
+    "model": "D-110",
+    "manufacturer": "Roland",
+    "type": "Multi Timbral Linear Synthesizer Module",
+    "date": "Mar. 1, 1988",
+    "version": "1.00"
+  },
+  "midi_implementation": {
+    "basic_channel": {
+      "transmitted": "1-16",
+      "recognized": "1-16",
+      "memorized": true
+    },
+    "mode": {
+      "transmitted": {
+        "default": "X",
+        "messages": "X",
+        "altered": "**********"
+      },
+      "recognized": {
+        "default": "3",
+        "messages": "X"
+      }
+    },
+    "note_number": {
+      "transmitted": "X",
+      "recognized": "0-127",
+      "true_voice": "12-108"
+    },
+    "velocity": {
+      "note_on": {
+        "transmitted": "X",
+        "recognized": "O (v=1-127)"
+      },
+      "note_off": {
+        "transmitted": "X",
+        "recognized": "X"
+      }
+    },
+    "after_touch": {
+      "keys": {
+        "transmitted": "X",
+        "recognized": "X"
+      },
+      "channel": {
+        "transmitted": "X",
+        "recognized": "X"
+      }
+    },
+    "pitch_bender": {
+      "transmitted": "X",
+      "recognized": "O"
+    },
+    "control_change": {
+      "1": {
+        "transmitted": "X",
+        "recognized": "O",
+        "function": "Modulation"
+      },
+      "2-5": {
+        "transmitted": "X",
+        "recognized": "X"
+      },
+      "6": {
+        "transmitted": "X",
+        "recognized": "**",
+        "function": "Data Entry"
+      },
+      "7": {
+        "transmitted": "X",
+        "recognized": "O",
+        "function": "Volume"
+      },
+      "8-9": {
+        "transmitted": "X",
+        "recognized": "X"
+      },
+      "10": {
+        "transmitted": "X",
+        "recognized": "O",
+        "function": "Pan"
+      },
+      "11": {
+        "transmitted": "X",
+        "recognized": "O",
+        "function": "Expression"
+      },
+      "12-63": {
+        "transmitted": "X",
+        "recognized": "X"
+      },
+      "64": {
+        "transmitted": "X",
+        "recognized": "O",
+        "function": "Hold1"
+      },
+      "65-99": {
+        "transmitted": "X",
+        "recognized": "X"
+      },
+      "100-101": {
+        "transmitted": "X",
+        "recognized": "** (0)",
+        "function": "RPC LSB, MSB"
+      },
+      "102-120": {
+        "transmitted": "X",
+        "recognized": "X"
+      },
+      "121": {
+        "transmitted": "X",
+        "recognized": "O",
+        "function": "Reset all Controllers"
+      }
+    },
+    "program_change": {
+      "transmitted": {
+        "true_number": "**********"
+      },
+      "recognized": {
+        "range": "0-127"
+      }
+    },
+    "system_exclusive": {
+      "transmitted": "*",
+      "recognized": "*"
+    },
+    "system_common": {
+      "song_position": {
+        "transmitted": "X",
+        "recognized": "X"
+      },
+      "song_select": {
+        "transmitted": "X",
+        "recognized": "X"
+      },
+      "tune": {
+        "transmitted": "X",
+        "recognized": "X"
+      }
+    },
+    "system_real_time": {
+      "clock": {
+        "transmitted": "X",
+        "recognized": "X"
+      },
+      "commands": {
+        "transmitted": "X",
+        "recognized": "X"
+      }
+    },
+    "aux_messages": {
+      "local_on_off": {
+        "transmitted": "X",
+        "recognized": "X"
+      },
+      "all_notes_off": {
+        "transmitted": "X",
+        "recognized": "O (123-127)"
+      },
+      "active_sense": {
+        "transmitted": "X",
+        "recognized": "O"
+      },
+      "reset": {
+        "transmitted": "X",
+        "recognized": "X"
+      }
+    },
+    "modes": {
+      "1": "OMNI ON, POLY",
+      "2": "OMNI ON, MONO", 
+      "3": "OMNI OFF, POLY",
+      "4": "OMNI OFF, MONO"
+    },
+    "notes": [
+      "* Can be set to O or X by manual operation",
+      "** RPC=Registered Parameter Control Number",
+      "RPC #0: Pitch Bend Sensitivity",
+      "The value of parameter is to be determined by entering data"
+    ]
+  },
+  "transmitted_data": {
+    "broadcast_messages": {
+      "description": "In Overflow event mode, retransmits the following MIDI 1A messages",
+      "note_on": "Channel voice messages except Note on",
+      "note_off": "Note on messages in which the assigned octave output's because note on messages to which the assigned octave 1 - 110 are simultaneously assignable voices."
+    },
+    "exclusive_messages": {
+      "status": {
+        "foo": "System Exclusive",
+        "f7h": "End of Exclusive"
+      },
+      "patch_mode": "When in Patch or Timbre Select mode, a Patch is set of parameters constitutes a timbre can be transmitted",
+      "multimode": "Individual parameter can be sent while editing",
+      "bulk_dump": "Timbre data can be transmitted when Exclusive Messages"
+    }
+  },
+  "recognized_receive_data": {
+    "note_events": {
+      "note_off": {
+        "status_range": "80h-8Fh",
+        "second_byte": "00h-7Fh (note number)",
+        "third_byte": "ignored",
+        "description": "Note off message"
+      },
+      "note_on": {
+        "status_range": "90h-9Fh", 
+        "second_byte": "00h-7Fh (note number)",
+        "third_byte": "01h-7Fh (velocity)",
+        "description": "Note on message",
+        "notes": "Note numbers outside of the range 12-108 are transposed to the nearest octave inside the range. For note off, 7-110 remains in mode 3 (Omni Off, Poly)."
+      }
+    },
+    "control_change": {
+      "modulation_depth": {
+        "status_range": "B0h-BFh",
+        "second_byte": "01h",
+        "third_byte": "00h-7Fh (modulation depth)",
+        "midi_channel": "MIDI Channel"
+      },
+      "data_entry": {
+        "status_range": "B0h-BFh", 
+        "second_byte": "06h",
+        "third_byte": "00h-7Fh (value of a parameter specified by RPC)",
+        "midi_channel": "MIDI Channel"
+      },
+      "main_volume": {
+        "status_range": "B0h-BFh",
+        "second_byte": "07h", 
+        "third_byte": "00h-7Fh (main volume)",
+        "midi_channel": "MIDI Channel",
+        "description": "Controls the volume of a Part accessible through the received MIDI channel. The maximum volume is determined by OUTPUT LEVEL set on the panel and bias volume message."
+      },
+      "expression": {
+        "status_range": "B0h-BFh",
+        "second_byte": "0Bh",
+        "third_byte": "00h-7Fh (expression)",
+        "midi_channel": "MIDI Channel",
+        "description": "Can control the volume of the playing midi. The maximum volume is determined by OUTPUT LEVEL set on the panel and Main volume message."
+      },
+      "hold1": {
+        "status_range": "B0h-BFh",
+        "second_byte": "40h",
+        "third_byte": "00h-3Fh (OFF), 40h-7Fh (ON)",
+        "midi_channel": "MIDI Channel"
+      },
+      "rpc_lsb": {
+        "status_range": "B0h-BFh",
+        "second_byte": "64h",
+        "third_byte": "00h-7Fh (lower byte of a parameter number controlled by RPC)",
+        "midi_channel": "MIDI Channel"
+      },
+      "rpc_msb": {
+        "status_range": "B0h-BFh", 
+        "second_byte": "65h",
+        "third_byte": "00h-7Fh (upper byte of a parameter number controlled by RPC)",
+        "midi_channel": "MIDI Channel",
+        "description": "Only PITCH BEND of #110 parameters can be controlled in Control change events PITCH Ch and the parameter to be controlled. Effective only while an F0 or F7 is not reached."
+      },
+      "reset_all_controllers": {
+        "status_range": "B0h-BFh",
+        "second_byte": "79h", 
+        "third_byte": "00h",
+        "midi_channel": "MIDI Channel"
+      }
+    },
+    "program_change": {
+      "patch_timbre_change": {
+        "status_range": "C0h-CFh",
+        "second_byte": "00h-7Fh (patch number)",
+        "midi_channel": "MIDI Channel",
+        "description": "Program change information on the control channel changes patches. If the sound accompanies program numbers 60h-7Fh is not available, it Performs the display shows"
+      }
+    },
+    "pitch_bender_change": {
+      "status_range": "E0h-EFh",
+      "second_byte": "00h-7Fh (pitch bender change value)",
+      "third_byte": "00h-7Fh",
+      "midi_channel": "MIDI Channel"
+    },
+    "mode_messages": {
+      "all_notes_off": {
+        "status_range": "B0h-BFh",
+        "second_byte": "7Bh",
+        "third_byte": "00h",
+        "midi_channel": "MIDI Channel",
+        "description": "Turns off all notes that have been turned on by MIDI Note on"
+      },
+      "omni_off": {
+        "status_range": "B0h-BFh", 
+        "second_byte": "7Ch",
+        "third_byte": "00h",
+        "midi_channel": "MIDI Channel",
+        "description": "Recognized as omni All notes off. D-110 remains in mode 3 (Omni Off, Poly)."
+      },
+      "omni_on": {
+        "status_range": "B0h-BFh",
+        "second_byte": "7Dh", 
+        "third_byte": "00h",
+        "midi_channel": "MIDI Channel",
+        "description": "Recognized as omni All notes off. D-110 remains in mode 3 (Omni Off, Poly)."
+      },
+      "mono": {
+        "status_range": "B0h-BFh",
+        "second_byte": "7Eh",
+        "third_byte": "ignored",
+        "midi_channel": "MIDI Channel",
+        "description": "Recognized as omni All notes off. D-110 remains in mode 3 (Omni Off, Poly)."
+      },
+      "poly": {
+        "status_range": "B0h-BFh",
+        "second_byte": "7Fh",
+        "third_byte": "00h", 
+        "midi_channel": "MIDI Channel",
+        "description": "Recognized as omni All notes off. D-110 remains in mode 3 (Omni Off, Poly)."
+      }
+    },
+    "exclusive_messages": {
+      "status": {
+        "f0h": "System Exclusive",
+        "f7h": "End of Exclusive"
+      },
+      "description": "Using exclusive message, a set of parameters for a Patch (timbre) or individual parameter can be set as a set data Timbre transmitted to/from a host. Currently message can be exchange. Refer to Roland Exclusive Messages and Sections 4 and 5."
+    },
+    "active_sensing": {
+      "status": "FEh",
+      "description": "Active Sensing. When received this message, D-110 expects to receive information of the same. Within 300msec. If D-110 fails to check messages within this time, all notes turn off. Currently message doesn't request."
+    }
+  },
+  "exclusive_communication": {
+    "description": "Parameters for patches, timbre or tones can be transferred to/from Roland devices in blocks: patches, timbre, tone, systems. Model IDs of device using these one MIDI channel as assigned to D-110. Only patches with the control ID of the D-110 can transfer parameters with D-110 devices. Since devices can be paired with additional parameter transfer. MIDI channel assignments remain, transfers. To use MIDI channel as described by Channel Mode. Separate parameters using the address in the transmitted. MIDI channel number or Unit #.",
+    "one_way_communication": {
+      "request_data": {
+        "format": "F0H 41H <device ID> 11H <address> <size> <checksum> F7H",
+        "description": "Request data"
+      },
+      "data_set_1": {
+        "format": "F0H 41H <device ID> 12H <address> <data> <checksum> F7H", 
+        "description": "Data set 1"
+      }
+    },
+    "handshaking_communications": {
+      "want_to_send_data": {
+        "format": "F0H 41H <device ID> 40H <data> F7H",
+        "description": "Want to send data"
+      },
+      "request_data": {
+        "format": "F0H 41H <device ID> 41H <data> F7H",
+        "description": "Request data"  
+      },
+      "data_set_1": {
+        "format": "F0H 41H <device ID> 42H <data> F7H",
+        "description": "Data set 1"
+      },
+      "acknowledge": {
+        "format": "F0H 41H <device ID> 43H <data> F7H",
+        "description": "Acknowledge"
+      },
+      "end_of_data": {
+        "format": "F0H 41H <device ID> 45H <data> F7H", 
+        "description": "End of data"
+      },
+      "communication_error": {
+        "format": "F0H 41H <device ID> 4EH <data> F7H",
+        "description": "Communication error"
+      },
+      "rejection": {
+        "format": "F0H 41H <device ID> 4FH <data> F7H",
+        "description": "Rejection"
+      }
+    },
+    "starting_sequences": {
+      "transmitter_initiating": "D-110 sends parameters using one appropriate events. D-110 sends parameters to the external unit matching to the device ID in the transmitted messages upon receiving this message",
+      "receiver_initiating": "D-110 accepts received data from external synthesizer units that send D-110 as base parameters from D-110",
+      "address_matching": "If the address matches to parameters have address, stops parameters receives from external. Otherwise sends this message.",
+      "failure_response": "Should failure to data occur, disconnect of checksum, sends the previous data again."
+    }
+  },
+  "parameter_base_address": {
+    "temporary_area": {
+      "description": "Temporary area (accessed through each basic channel)",
+      "start_address": "10 00 00",
+      "structure": {
+        "partial_1": {
+          "timbre_temporary_area_part_1": "10 00 00",
+          "size": 59
+        },
+        "partial_2": {
+          "timbre_temporary_area_part_2": "10 00 3B", 
+          "size": 59
+        },
+        "partial_3": {
+          "timbre_temporary_area_part_3": "10 00 76",
+          "size": 59
+        },
+        "partial_4": {
+          "timbre_temporary_area_part_4": "10 00 B1",
+          "size": 59
+        },
+        "common_parameters": {
+          "tone_temporary_area_part_1": "10 01 00",
+          "size": 18
+        },
+        "tone_memory_1": {
+          "tone_temporary_area_part_1": "10 01 12",
+          "size": 18
+        },
+        "tone_memory_2": {
+          "tone_temporary_area_part_2": "10 01 24", 
+          "size": 18
+        },
+        "tone_memory_3": {
+          "tone_temporary_area_part_3": "10 01 36",
+          "size": 18  
+        },
+        "tone_memory_4": {
+          "tone_temporary_area_part_4": "10 01 48",
+          "size": 18
+        },
+        "rhythm_area": {
+          "rhythm_temporary_area": "10 02 00",
+          "size": 16
+        },
+        "system_area": {
+          "system_temporary_area": "10 04 00", 
+          "size": 17
+        },
+        "display": {
+          "address": "20 00 00",
+          "size": 12
+        },
+        "setup": {
+          "voice_reserve": "30 00 00",
+          "size": 9
+        }
+      }
+    },
+    "tone_temporary_area_memory": {
+      "description": "Tone temporary area / Tone memory",
+      "addresses": {
+        "00_00": "Common parameter",
+        "00_01": "Partial parameter (for Partial 1)",
+        "00_02": "Partial parameter (for Partial 2)", 
+        "00_03": "Partial parameter (for Partial 3)",
+        "00_04": "Partial parameter (for Partial 4)"
+      }
+    },
+    "common_parameter": {
+      "offset_00": {
+        "name": "TONE NAME 1",
+        "address": "0000 0000",
+        "range": "20H-7FH"
+      },
+      "offset_01": {
+        "name": "TONE NAME 2", 
+        "address": "0000 0001",
+        "range": "20H-7FH"
+      },
+      "offset_02": {
+        "name": "Structure of Partial 1",
+        "address": "0000 0010",
+        "range": "0-13",
+        "values": {
+          "0": "OFF",
+          "1-13": "1-13"
+        }
+      },
+      "offset_03": {
+        "name": "Structure of Partial 2",
+        "address": "0000 0011", 
+        "range": "0-13",
+        "values": {
+          "0": "OFF",
+          "1-13": "1-13"
+        }
+      },
+      "offset_04": {
+        "name": "Structure of Partial 3",
+        "address": "0000 0100",
+        "range": "0-13",
+        "values": {
+          "0": "OFF", 
+          "1-13": "1-13"
+        }
+      },
+      "offset_05": {
+        "name": "Structure of Partial 4",  
+        "address": "0000 0101",
+        "range": "0-13",
+        "values": {
+          "0": "OFF",
+          "1-13": "1-13"
+        }
+      },
+      "offset_06": {
+        "name": "PARTIAL MUTE",
+        "address": "0000 0110", 
+        "range": "0-15",
+        "description": "Mutually exclusive (internal)"
+      },
+      "offset_07": {
+        "name": "ENV MODE",
+        "address": "0000 0111",
+        "range": "0-1",
+        "values": {
+          "0": "NO SUSTAIN",
+          "1": "SUSTAIN"
+        }
+      }
+    },
+    "partial_parameter": {
+      "description": "Partial parameter (for each part)",
+      "offset_00": {
+        "name": "TONE GROUP",
+        "address": "0000 0000",
+        "range": "0-3",
+        "values": {
+          "0": "A",
+          "1": "B", 
+          "2": "I (YRC)",
+          "3": "R"
+        }
+      },
+      "offset_01": {
+        "name": "TONE NUMBER",
+        "address": "0000 0001",
+        "range": "0-127"
+      },
+      "offset_02": {
+        "name": "KEY SHIFT",
+        "address": "0000 0010", 
+        "range": "0-48",
+        "center": 24,
+        "description": "+24"
+      },
+      "offset_03": {
+        "name": "FINE TUNE",
+        "address": "0000 0011",
+        "range": "0-100", 
+        "center": 50,
+        "description": "+50"
+      },
+      "offset_04": {
+        "name": "BENDER RANGE",
+        "address": "0000 0100",
+        "range": "0-24"
+      },
+      "offset_05": {
+        "name": "ASSIGN MODE",
+        "address": "0000 0101",
+        "range": "0-3",
+        "values": {
+          "0": "LAST",
+          "1": "LOUDEST", 
+          "2": "QUIETEST"
+        }
+      },
+      "offset_06": {
+        "name": "OUTPUT LEVEL",
+        "address": "0000 0110",
+        "range": "0-100"
+      },
+      "offset_07": {
+        "name": "OUTPUT ASSIGN",
+        "address": "0000 0111", 
+        "range": "0-7",
+        "values": {
+          "0": "MIX",
+          "1": "1",
+          "2": "2", 
+          "3": "3",
+          "4": "4",
+          "5": "5", 
+          "6": "6",
+          "7": "7"
+        }
+      }
+    },
+    "timbre_memory": {
+      "description": "The total number of Partial reserved for D peeks must be 32 or fewer",
+      "offset_00": {
+        "name": "MASTER TUNE",
+        "address": "0000 0000",
+        "range": "0-127",
+        "center": 64,
+        "description": "A=440.0Hz +50"
+      },
+      "offset_01": {
+        "name": "SYSTEM MODE",
+        "address": "0000 0001",
+        "range": "0-1",
+        "values": {
+          "0": "NORMAL",
+          "1": "MULTI"
+        }
+      },
+      "patch_memory": {
+        "description": "The total number of Partial reserved for D peeks must be 32 or fewer",
+        "offset_00": {
+          "name": "PATCH NAME 1",
+          "address": "0000 0000",
+          "range": "20H-7FH (ASCII)"
+        },
+        "offset_01": {
+          "name": "REVERB MODE",
+          "address": "0000 0001",
+          "range": "0-3",
+          "values": {
+            "0": "Room1_Hall1/2",
+            "1": "Plate Tap delay",
+            "2": "Cross delay", 
+            "3": "0-3"
+          }
+        },
+        "offset_02": {
+          "name": "REVERB TYPE", 
+          "address": "0000 0010",
+          "range": "0-7"
+        },
+        "offset_03": {
+          "name": "REVERB LEVEL",
+          "address": "0000 0011",
+          "range": "0-7"
+        },
+        "offset_04_to_13": {
+          "description": "PARTIAL RESERVE (Part 1-8)",
+          "address_range": "0000 0100 - 0000 1101",
+          "range": "0-32"
+        },
+        "offset_14_to_1B": {
+          "description": "MIDI CHANNELS (Part 1-8)",
+          "address_range": "0000 1110 - 0000 11011",
+          "range": "0-16", 
+          "values": {
+            "0": "OFF",
+            "1-16": "1-16"
+          }
+        },
+        "patch_parameters": {
+          "description": "Patch parameters (Part 1-8)",
+          "offset_1C_to_5F": {
+            "description": "PATCH PARAMETERS (Part 1-8)",
+            "address_range": "0000 11100 - 1000000", 
+            "range": "0-127"
+          }
+        }
+      }
+    },
+    "patch_parameters_per_part": {
+      "description": "Patch parameters (for each part)",
+      "offset_00": {
+        "name": "TONE GROUP",
+        "address": "0000 0000",
+        "range": "0-3"
+      },
+      "offset_01": {
+        "name": "TONE NUMBER", 
+        "address": "0000 0001",
+        "range": "0-127"
+      },
+      "offset_02": {
+        "name": "KEY SHIFT",
+        "address": "0000 0010",
+        "range": "0-48",
+        "center": 24,
+        "description": "+24"
+      },
+      "offset_03": {
+        "name": "FINE TUNE",
+        "address": "0000 0011",
+        "range": "0-100",
+        "center": 50, 
+        "description": "+50"
+      },
+      "offset_04": {
+        "name": "BENDER RANGE", 
+        "address": "0000 0100",
+        "range": "0-24"
+      },
+      "offset_05": {
+        "name": "ASSIGN MODE",
+        "address": "0000 0101",
+        "range": "0-3"
+      },
+      "offset_06": {
+        "name": "OUTPUT LEVEL",
+        "address": "0000 0110", 
+        "range": "0-100"
+      },
+      "offset_07": {
+        "name": "OUTPUT ASSIGN",
+        "address": "0000 0111",
+        "range": "0-7"
+      }
+    },
+    "system_area": {
+      "description": "The total number of Partial reserved for D peeks must be 32 or fewer",
+      "offset_00": {
+        "name": "MASTER TUNE", 
+        "address": "0000 0000",
+        "range": "0-127",
+        "center": 64,
+        "description": "A=440.0Hz +50"
+      },
+      "offset_01": {
+        "name": "SYSTEM MODE",
+        "address": "0000 0001", 
+        "range": "0-1",
+        "values": {
+          "0": "NORMAL", 
+          "1": "MULTI"
+        }
+      },
+      "offset_02": {
+        "name": "REVERB TIME",
+        "address": "0000 0010",
+        "range": "0-7"
+      },
+      "offset_03": {
+        "name": "REVERB LEVEL",
+        "address": "0000 0011",
+        "range": "0-7"
+      },
+      "offset_04_to_0B": {
+        "description": "PARTIAL RESERVE (Part 1-8)",
+        "address_range": "0000 0100 - 0000 1011", 
+        "range": "0-32"
+      },
+      "offset_0C_to_13": {
+        "description": "PARTIAL RESERVE (Part 1-8)",
+        "address_range": "0000 1100 - 0000 10011",
+        "range": "0-32"
+      }
+    }
+  }
+}
