@@ -1,0 +1,80 @@
+# Example Spec DSL for Roland D-110
+# NOTE: Illustrative example of the Spec-DSL structure; values are not verified for actual use
+manufacturer: Roland
+model: D-110
+transport: SysEx7
+checksum: roland_sum7
+
+commands:
+  # Read patch data command
+  read_patch:
+    spec:
+      Seq:
+        nodes:
+          - Const: 0xF0                # SysEx start
+          - Const: 0x41                # Roland manufacturer ID
+          - U7: device_id              # dynamic device ID
+          - Const: 0x11                # Command ID: patch read
+          - U14: patch_address         # 14-bit address
+          - Bytes:
+              name: patch_data
+              until: 0xF7              # Read until SysEx end
+          - Const: 0xF7                # SysEx end
+    validate:
+      - all_bytes_7bit
+      - checksum: roland_sum7
+
+  # Write patch data command with computed length
+  write_patch:
+    spec:
+      Seq:
+        nodes:
+          - Const: 0xF0
+          - Const: 0x41
+          - U7: device_id
+          - Const: 0x12                # Command ID: patch write
+          - U14: patch_address
+          - Bytes:
+              name: patch_data
+              len: data_length         # computed field
+          - U7: checksum
+          - Const: 0xF7
+    computed:
+      data_length:
+        expr: "patch_data.size()"      # compute length from payload
+    validate:
+      - all_bytes_7bit
+      - checksum:
+          func: roland_sum7
+          field: checksum
+
+  # Config request vs. response example using Choice
+  config_message:
+    spec:
+      Choice:
+        cases:
+          0x10:
+            Seq:
+              nodes:
+                - Const: 0xF0
+                - Const: 0x41
+                - U7: device_id
+                - Const: 0x10       # Config request ID
+                - Const: 0x00       # Sub-command
+                - U7: checksum
+                - Const: 0xF7
+          0x11:
+            Seq:
+              nodes:
+                - Const: 0xF0
+                - Const: 0x41
+                - U7: device_id
+                - Const: 0x11       # Config response ID
+                - Bytes:
+                    name: version_bytes
+                    len: 3
+                - U7: checksum
+                - Const: 0xF7
+    validate:
+      - all_bytes_7bit
+      - checksum: roland_sum7
