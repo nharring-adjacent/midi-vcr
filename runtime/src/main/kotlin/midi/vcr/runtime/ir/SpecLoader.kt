@@ -71,6 +71,13 @@ object YamlSpecLoader : SpecLoader {
                         val name = m["name"] as? String ?: error("Bytes.name missing")
                         val len = m["len"]?.let { toInt(it) }
                         val until = m["until"]?.let { toByte(it) }
+                        // Schema invariant: exactly one of len or until must be provided
+                        if ((len == null) == (until == null)) {
+                            error("Bytes must specify exactly one of len or until")
+                        }
+                        if (len != null && len < 0) {
+                            error("Bytes.len must be non-negative")
+                        }
                         Bytes(name, len, until)
                     }
                     "Choice" -> {
@@ -83,6 +90,13 @@ object YamlSpecLoader : SpecLoader {
                         val node = parseNode(m["node"])
                         val count = m["count"]?.let { toInt(it) }
                         val until = m["until"]?.toString()
+                        // Schema invariant: exactly one of count or until must be provided
+                        if ((count == null) == (until == null)) {
+                            error("Repeat must specify exactly one of count or until")
+                        }
+                        if (count != null && count < 0) {
+                            error("Repeat.count must be non-negative")
+                        }
                         Repeat(node, count, until)
                     }
                     else -> error("Unknown node type: $type")
