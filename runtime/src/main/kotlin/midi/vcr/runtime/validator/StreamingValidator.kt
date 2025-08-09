@@ -6,7 +6,16 @@ import java.lang.IllegalArgumentException
  * Streaming MIDI SysEx validator.
  * Enforces 7-bit constraints, recognizes real-time bytes, and frames messages.
  */
-class StreamingValidator {
+interface Validator {
+    /** Process a single MIDI byte. Throws on invalid data/status. */
+    fun onByte(b: Byte)
+    /** Clear the current frame buffer. */
+    fun reset()
+    /** Get the collected bytes so far. */
+    fun getFrame(): ByteArray
+}
+
+class StreamingValidator : Validator {
     private val buffer = mutableListOf<Byte>()
 
     /**
